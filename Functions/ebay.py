@@ -11,19 +11,18 @@ def Ebay(search):
   soup1 = soup(page.content, "html.parser")
 
   products = soup1.findAll("li",{"class":"s-item s-item__pl-on-bottom s-item--watch-at-corner"})
-
+  
   for product in products:
-    try:
-      productName = product.div.div.next_sibling.a.h3.text.strip()
-      productPrice = product.find("div",{"class":"s-item__details clearfix"}).div.span.text
-      productPrice = productPrice.replace(",", "")
-      productPrice = float(productPrice[1:])
-      productLink = product.div.div.next_sibling.a["href"]
+  
+    productName = product.div.div.next_sibling.a.div.text.strip()
+    productPrice = product.find("div",{"class":"s-item__details clearfix"}).div.span.text
+    productPrice = productPrice.replace(",", "")
+    productPrice = float(productPrice[1:])
+    productLink = product.div.div.next_sibling.a["href"]
 
-      newProduct = {"name":productName,"price":productPrice,"link":productLink}
-      outputList.append(newProduct)
-    except:
-      pass
+    newProduct = {"name":productName,"price":productPrice,"link":productLink}
+    outputList.append(newProduct)
+    
       
 
   return outputList

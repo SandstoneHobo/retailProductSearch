@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as soup
+import time
 import requests
 
 def connect(search, pageNum):
@@ -14,24 +15,28 @@ def Amazon(search):
   soup1 = connect(search, 1)
   outputList = []
 
-  PageCount = soup1.find("div",{"class":"a-section a-text-center s-pagination-container"}).span.a.next_sibling.next_sibling.next_sibling.text
-  print(PageCount)
+  PageCount = int(soup1.find("div",{"class":"a-section a-text-center s-pagination-container"}).span.a.next_sibling.next_sibling.next_sibling.text)
 
-  products = soup1.findAll("div", {"class":"sg-col sg-col-4-of-12 sg-col-8-of-16 sg-col-12-of-20 s-list-col-right"})
+  for page in range(1, PageCount + 1):
+    if page != 1:
+      soup1 = connect(search, page)
+
+    products = soup1.findAll("div", {"class":"sg-col sg-col-4-of-12 sg-col-8-of-16 sg-col-12-of-20 s-list-col-right"})
   
 
-  for product in products:
-    try:
-      productName = product.div.div.div.h2.a.span.text
-      productPrice = product.find("span", {"class":"a-price"}).text
-      productPrice = productPrice.replace(",", "")
-      productPrice = float(productPrice[1:7])
-      productLink = "https://www.amazon.com" + product.div.div.div.next_sibling.next_sibling.div.div.div.div.a["href"]
-      
+    for product in products:
+      try:
+        productName = product.div.div.div.h2.a.span.text
+        productPrice = product.find("span", {"class":"a-price"}).text
+        productPrice = productPrice.replace(",", "")
+        productPrice = float(productPrice[1:7])
+        productLink = "https://www.amazon.com" + product.div.div.div.next_sibling.next_sibling.div.div.div.div.a["href"]
+        
 
-      newProduct = {"name":productName,"price":productPrice,"link":productLink}
-      outputList.append(newProduct)
-    except:
-      pass   
+        newProduct = {"name":productName,"price":productPrice,"link":productLink}
+        outputList.append(newProduct)
+      except:
+        pass
+    time.sleep(5)
 
   return outputList
