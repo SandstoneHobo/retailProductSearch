@@ -20,6 +20,9 @@ def Amazon(search):
   for page in range(1, PageCount + 1):
     if page != 1:
       soup1 = connect(search, page)
+      print("\n Getting results for page: " + str(page))
+    else:
+      print("\n Getting results for page: 1")
 
     products = soup1.findAll("div", {"class":"sg-col sg-col-4-of-12 sg-col-8-of-16 sg-col-12-of-20 s-list-col-right"})
   
