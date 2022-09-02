@@ -17,7 +17,7 @@ def Walmart(search):
   count = 1
 
   while(pages):
-    if count != 1 and count <= 15:
+    if count != 1 and count <= 10:
       soup1 = connect(search, count)
       print("\n Getting results for page: " + str(count))
       

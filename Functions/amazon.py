@@ -17,7 +17,7 @@ def Amazon(search):
 
   PageCount = int(soup1.find("div",{"class":"a-section a-text-center s-pagination-container"}).span.a.next_sibling.next_sibling.next_sibling.text)
 
-  for page in range(1, PageCount + 1):
+  for page in range(1, 11):
     if page != 1:
       soup1 = connect(search, page)
       print("\n Getting results for page: " + str(page))

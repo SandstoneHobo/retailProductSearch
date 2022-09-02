@@ -17,27 +17,30 @@ def BestBuy(search):
   pages = True
   count = 1
 
-  products = soup1.findAll("li", {"class":"sku-item"})
-
   while(pages):
-    if count != 1 and count <= 15:
+    if count != 1 and count <= 10:
       soup1 = connect(search, count)
       print("\n Getting results for page: " + str(count))
     elif count == 1:
       print("\n Getting results for page: " + str(count))
     else:
       break
+
+    products = soup1.findAll("li", {"class":"sku-item"})
     
     for product in products:
-      productName = product.div.div.div.div.div.div.h4.a.text
-      productPrice = product.div.div.div.div.div.div.next_sibling.div.div.div.div.div.div.div.div.div.div.div.span.text
-      productPrice = productPrice.replace(",", "")
-      productPrice = float(productPrice[1:])
-      productLink = product.div.div.div.div.div.a["href"]
-      productLink = "https://bestbuy.com" + productLink
+      try:
+        productName = product.div.div.div.div.div.div.h4.a.text
+        productPrice = product.div.div.div.div.div.div.next_sibling.div.div.div.div.div.div.div.div.div.div.div.span.text
+        productPrice = productPrice.replace(",", "")
+        productPrice = float(productPrice[1:])
+        productLink = product.div.div.div.div.div.a["href"]
+        productLink = "https://bestbuy.com" + productLink
 
-      newProduct = {"name":productName,"price":productPrice,"link":productLink}
-      outputList.append(newProduct)
+        newProduct = {"name":productName,"price":productPrice,"link":productLink}
+        outputList.append(newProduct)
+      except:
+        pass
       
     count += 1
 
