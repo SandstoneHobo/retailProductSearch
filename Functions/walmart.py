@@ -33,16 +33,21 @@ def Walmart(search):
       productName = product.div.div.div.div.next_sibling.div.next_sibling.text
       productPrice = product.div.div.div.div.next_sibling.div.div.text
       productPrice = productPrice.replace(",", "")
-      productPrice = float(productPrice[1:])
       productLink = product.div.div.a["href"]
       productLink = "https://www.walmart.com" + productLink
-
+      for i in range(0, len(productPrice)):
+        if productPrice[i] == "$":
+          productPrice = float(productPrice[i+1:i+6])
+          break
       newProduct = {"name":productName,"price":productPrice,"link":productLink}
-      outputList.append(newProduct)
+      if(newProduct not in outputList and type(productPrice) is float):
+        outputList.append(newProduct)
+      else:
+        pass
+      
 
     count += 1
     time.sleep(5)
 
   return outputList
  
-

@@ -33,12 +33,18 @@ def BestBuy(search):
         productName = product.div.div.div.div.div.div.h4.a.text
         productPrice = product.div.div.div.div.div.div.next_sibling.div.div.div.div.div.div.div.div.div.div.div.span.text
         productPrice = productPrice.replace(",", "")
-        productPrice = float(productPrice[1:])
+        for i in range(0, len(productPrice)):
+          if productPrice[i] == "$":
+            productPrice = float(productPrice[i+1:i+6])
+            break
         productLink = product.div.div.div.div.div.a["href"]
         productLink = "https://bestbuy.com" + productLink
 
         newProduct = {"name":productName,"price":productPrice,"link":productLink}
-        outputList.append(newProduct)
+        if(newProduct not in outputList and type(productPrice) is float):
+          outputList.append(newProduct)
+        else:
+          pass
       except:
         pass
       
